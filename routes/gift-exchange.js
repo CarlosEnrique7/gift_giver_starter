@@ -1,24 +1,27 @@
 const express = require("express");
 const router = express.Router();
+const GiftExchange = require("../model/gift-exchange");
 
-const voting = {
-  tie: 0,
-  shirt: 0,
-  "gift card": 0,
-};
-
-router.get("/", async (req, res, next) => {
-  res.status(200).json(voting);
+router.get("/pairs", async (req, res, next) => {
+  const pairs = await GiftExchange.getPairs();
+  res.status(200).json(pairs);
 });
 
-router.post("/:giftName", async (req, res, next) => {
-  const giftName = req.params.giftName;
+router.post("/pairs", async (req, res, next) => {
+  const names = req.body.names;
+  const pairs = await GiftExchange.pairs(names);
+  res.json(pairs);
+});
 
-  if (voting[giftName] || voting[giftName] === 0) {
-    voting[giftName] += 1;
-  }
+router.get("/traditional", async (req, res, next) => {
+  const pairs = await GiftExchange.getTraditional();
+  res.status(200).json(pairs);
+});
 
-  res.status(200).json(voting);
+router.post("/traditional", async (req, res, next) => {
+  const names = req.body.names;
+  const traditional = await GiftExchange.traditional(names);
+  res.json(traditional);
 });
 
 module.exports = router;
