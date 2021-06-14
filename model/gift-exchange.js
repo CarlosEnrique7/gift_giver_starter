@@ -1,3 +1,5 @@
+const { BadRequestError } = require("../utils/errors");
+
 let namesArr = [];
 let pairs = [];
 let phrases = [];
@@ -8,7 +10,13 @@ class GiftExchange {
   }
 
   static async pairs(names) {
+    if (names == undefined) {
+      throw new BadRequestError("You must include a list of names!");
+    }
     namesArr = names;
+    if (namesArr.length % 2 != 0) {
+      throw new BadRequestError("You must have an even number of names!");
+    }
     let ranNum;
     let ranNum2;
     let numsUsed = [];
@@ -35,7 +43,13 @@ class GiftExchange {
   }
 
   static async traditional(names) {
+    if (names == undefined) {
+      throw new BadRequestError("You must include a list of names!");
+    }
     namesArr = names;
+    if (namesArr.length % 2 != 0) {
+      throw new BadRequestError("You must have an even number of names!");
+    }
     let ranNum;
     let numsUsed = [];
 
